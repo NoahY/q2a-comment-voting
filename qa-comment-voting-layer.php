@@ -16,7 +16,7 @@
 		function c_item_main($c_item)
 		{
 			$this->output('<div class="comment-vote-container">▲<br/>⚑</div>');
-			c_item_main($c_item);
+			qa_html_theme_base::c_item_main($c_item);
 		}
 	}
 
