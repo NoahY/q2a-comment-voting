@@ -1,38 +1,33 @@
-===========================
-Question2Answer Embed 1.0b1
-===========================
+==================================
+Question2Answer Comment Voting 0.1
+==================================
 -----------
 Description
 -----------
-This is a plugin for **Question2Answer** that provides video embedding functionality.
+This is a plugin for **Question2Answer** that provides comment voting functionality.
 
 --------
 Features
 --------
 - currently supports the following sites:
-  - YouTube
-  - Vimeo
-  - Metacafe
-  - Dailymotion
-- also supports basic image embedding from urls (won't work for complex urls)
 - switch on and off via admin/plugins
-- set width and height via admin/plugins
+- switch between upvoting only and up/down voting via admin/plugins
 
 ------------
 Installation
 ------------
 1. Install Question2Answer_
-2. Create a new folder in the qa-plugin directory (e.g. embed)
+2. Create a new folder in the qa-plugin directory (e.g. comment-voting)
 3. Place the files in this repository in that folder.
 4. navigate to your site
-5. Go to **Admin -> Plugins** on your q2a install and select the '**Enable Video Embedding**' option, then '**Save**'.
+5. Go to **Admin -> Plugins** on your q2a install and select the '**Enable comment voting**' option, then '**Save**'.
 
 .. _Question2Answer: http://www.question2answer.org/install.php
 
 ----------
 Disclaimer
 ----------
-This is **beta** code.  It is probably okay for production environments, but may not work exactly as expected.  Refunds will not be given.  If it breaks, you get to keep both parts.
+This is **alpha** code.  It is not intended for production environments unless you are very brave... well, at least a little brave, and maybe a bit foolhardy as well.  Refunds will not be given.  If it breaks, you get to keep both parts.
 
 -------
 Release
