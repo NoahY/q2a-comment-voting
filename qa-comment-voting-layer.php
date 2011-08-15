@@ -101,7 +101,7 @@
 				$this->output('
 <style>
 	.comment-votable-container {
-		width:100%;
+		width:100% !important;
 	}
 	.comment-vote-container {
 		padding-right: 4px;
