@@ -124,9 +124,9 @@
 				$comment = qa_db_single_select(qa_db_full_post_selectspec(null, $postid));
 				
 				$votes = $comment['netvotes'];
-				echo '{"status":"1","message":"'.$votes.'"}';
+				echo '{"status":"1","data":"'.$votes.'"}';
 			} else {
-				echo '{"status":"1","message":"'.$voteerror.'"}';
+				echo '{"status":"1","data":"'.$voteerror.'"}';
 			}
 
 		}
