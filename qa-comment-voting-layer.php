@@ -32,8 +32,9 @@
 	{
 		var ens=elem.getAttribute('name').split('_');
 		var postid=ens[1];
-		var vote=ens[2];
+		var vote=parseInt(ens[2]);
 		var anchor=ens[3];
+		var which=parseInt(ens[4]);
 
 		var dataString = 'ajax_comment_vote_id='+postid+'&ajax_comment_vote='+vote;  
 
@@ -42,16 +43,38 @@
 		  url: '".qa_self_html()."',  
 		  data: dataString,  
 		  dataType: 'json',  
-		  success: function(lines) {
-				if (lines.status==1) {
-					jQuery('#voting_'+postid).html(lines.data);
-				} else if (lines.status==0) {
+		  success: function(json) {
+				if (json.status==1) {
+					switch(vote) {
+						case 1:
+							var up = 0;
+							var down = -1;
+							var up_type = '-selected';
+							var down_type = '-disabled';
+							break;
+						case -1:
+							var up = 1;
+							var down = 0;
+							var up_type = '-disabled';
+							var down_type = '-selected';
+							break;
+						case 0:
+							var up = 1;
+							var down = -1;
+							var up_type = '';
+							var down_type = '';
+							break;
+					}
+
+					elem.parentNode.innerHTML = '<div class=\"comment-vote-item'+up_type+'\" name=\"vote_'+ens[1]+'_'+up+'_c'+ens[1]+'_1\" onclick=\"ajaxCommentVote(this);\">▲</div><div id=\"voting_'+ens[1]+'\">'+json.data+'</div><div class=\"comment-vote-item'+down_type+'\" name=\"vote_'+ens[1]+'_'+down+'_c'+ens[1]+'_-1\" onclick=\"ajaxCommentVote(this);\">▼</div>';
+
+				} else if (json.status==0) {
 					var mess=document.getElementById('errorbox');
 					if (!mess) {
 						var mess=document.createElement('div');
 						mess.id='errorbox';
 						mess.className='qa-error';
-						mess.innerHTML=lines.data;
+						mess.innerHTML=json.data;
 					}
 					var postelem=document.getElementById(anchor);
 					postelem.parentNode.insertBefore(mess, postelem);
@@ -75,14 +98,18 @@
 		float: left;
 		margin-right: 6px;
 		color: silver;
+		text-align: center;
 	}
 	.comment-vote-item:hover {
 		color:black;
-		cursor:pointer
+		cursor:pointer;
 	}
 	.comment-vote-item-selected {
 		color:orange;
-		cursor:pointer
+		cursor:pointer;
+	}
+	.comment-vote-item-disabled {
+		display:none;
 	}
 </style>');
 
@@ -96,11 +123,22 @@
 			$flag=0;
 			foreach($this->comment_votes as $vote) {
 				if($vote['postid'] == $c_item['raw']['postid']) {
-					$vote = $vote['vote'];
+					$vote = (int)$vote['vote'];
 					break;
 				}
 			}
-			$this->output('<div class="comment-vote-container"><span class="comment-vote-item'.($vote==1?'-selected':'').'" name="vote_'.$c_item['raw']['postid'].'_1_c'.$c_item['raw']['postid'].'" onclick="ajaxCommentVote(this);">▲</span><br/><span id="voting_'.$c_item['raw']['postid'].'">'.($c_item['raw']['netvotes']!=0?$c_item['raw']['netvotes']:'').'</span><br/><span class="comment-vote-item'.($vote==-1?'-selected':'').'" onclick="ajaxCommentVote(this);" name="vote_'.$c_item['raw']['postid'].'_-1_c'.$c_item['raw']['postid'].'">▼</span></div>');
+			$netvotes = ($c_item['raw']['netvotes']!=0?$c_item['raw']['netvotes']:'');
+			switch($vote) {
+				case 1:
+					$this->output('<div class="comment-vote-container"><div class="comment-vote-item-selected" name="vote_'.$c_item['raw']['postid'].'_0_c'.$c_item['raw']['postid'].'_1" onclick="ajaxCommentVote(this);">▲</div><div id="voting_'.$c_item['raw']['postid'].'">'.$netvotes.'</div><div class="comment-vote-item-disabled" onclick="ajaxCommentVote(this);" name="vote_'.$c_item['raw']['postid'].'_-1_c'.$c_item['raw']['postid'].'_-1">▼</div></div>');
+					break;
+				case -1:
+					$this->output('<div class="comment-vote-container"><div class="comment-vote-item-disabled" name="vote_'.$c_item['raw']['postid'].'_1_c'.$c_item['raw']['postid'].'_1" onclick="ajaxCommentVote(this);">▲</div><div id="voting_'.$c_item['raw']['postid'].'">'.$netvotes.'</div><div class="comment-vote-item-selected" onclick="ajaxCommentVote(this);" name="vote_'.$c_item['raw']['postid'].'_0_c'.$c_item['raw']['postid'].'_-1">▼</div></div>');
+					break;
+				default:
+					$this->output('<div class="comment-vote-container"><div class="comment-vote-item" name="vote_'.$c_item['raw']['postid'].'_1_c'.$c_item['raw']['postid'].'_1" onclick="ajaxCommentVote(this);">▲</div><div id="voting_'.$c_item['raw']['postid'].'">'.$netvotes.'</div><div class="comment-vote-item" onclick="ajaxCommentVote(this);" name="vote_'.$c_item['raw']['postid'].'_-1_c'.$c_item['raw']['postid'].'_-1">▼</div></div>');
+					break;
+			}
 			qa_html_theme_base::c_item_main($c_item);
 		}
 
