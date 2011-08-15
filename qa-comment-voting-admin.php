@@ -23,7 +23,7 @@
             $ok = null;
             
             if (qa_clicked('comment_voting_save')) {
-                qa_opt('comment_voting_enable',qa_post_text('comment_voting_enable'));
+                qa_opt('voting_on_cs',(bool)qa_post_text('voting_on_cs'));
                 $ok = 'Settings Saved.';
             }
             
@@ -35,8 +35,8 @@
             
             $fields[] = array(
                 'label' => 'Enable comment voting',
-                'tags' => 'NAME="comment_voting_enable"',
-                'value' => qa_opt('comment_voting_enable'),
+                'tags' => 'NAME="voting_on_cs"',
+                'value' => qa_opt('voting_on_cs'),
                 'type' => 'checkbox',
             );
 
