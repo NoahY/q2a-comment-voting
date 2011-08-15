@@ -9,7 +9,6 @@ This is a plugin for **Question2Answer** that provides comment voting functional
 --------
 Features
 --------
-- currently supports the following sites:
 - switch on and off via admin/plugins
 - switch between upvoting only and up/down voting via admin/plugins
 
