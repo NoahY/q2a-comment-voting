@@ -205,8 +205,7 @@
 			$post=qa_db_select_with_pending(qa_db_full_post_selectspec($this->logged_in_userid, $postid));
 			$voteerror = $this->comment_vote_error_html($post, $this->logged_in_userid, $topage);
 			if ($voteerror===false) {
-				require_once QA_INCLUDE_DIR.'qa-app-votes.php';
-				qa_vote_set($post, $this->logged_in_userid, qa_get_logged_in_handle(), $qa_cookieid, $vote);
+				$this->comment_vote_set($post, $this->logged_in_userid, qa_get_logged_in_handle(), $qa_cookieid, $vote);
 				
 				$comment = qa_db_single_select(qa_db_full_post_selectspec(null, $postid));
 				
@@ -261,6 +260,67 @@
 			} else
 				return qa_lang_html('main/vote_not_allowed'); // voting option should not have been presented (but could happen due to options change)
 		}
+
+		function comment_vote_set($post, $userid, $handle, $cookieid, $vote)
+	/*
+		Actually set (application level) the $vote (-1/0/1) by $userid (with $handle and $cookieid) on $postid.
+		Handles user points, recounting and event reports as appropriate.
+	*/
+		{
+			require_once QA_INCLUDE_DIR.'qa-db-votes.php';
+
+/*
+			require_once QA_INCLUDE_DIR.'qa-db-points.php';
+			require_once QA_INCLUDE_DIR.'qa-db-hotness.php';
+			require_once QA_INCLUDE_DIR.'qa-app-limits.php';
+*/		
+			$vote=(int)min(1, max(-1, $vote));
+			$oldvote=(int)qa_db_uservote_get($post['postid'], $userid);
+
+			qa_db_uservote_set($post['postid'], $userid, $vote);
+			qa_db_post_recount_votes($post['postid']);
+
+/*
+			
+			$postisanswer=($post['basetype']=='A');
+			
+			$columns=array();
+			
+			if ( ($vote>0) || ($oldvote>0) )
+				$columns[]=$postisanswer ? 'aupvotes' : 'qupvotes';
+
+			if ( ($vote<0) || ($oldvote<0) )
+				$columns[]=$postisanswer ? 'adownvotes' : 'qdownvotes';
+	
+			qa_db_points_update_ifuser($userid, $columns);
+			
+			qa_db_points_update_ifuser($post['userid'], array($postisanswer ? 'avoteds' : 'qvoteds', 'upvoteds', 'downvoteds'));
+			
+			if ($post['basetype']=='Q')
+				qa_db_hotness_update($post['postid']);
+			
+			if ($vote<0)
+				$action=$postisanswer ? 'a_vote_down' : 'q_vote_down';
+			elseif ($vote>0)
+				$action=$postisanswer ? 'a_vote_up' : 'q_vote_up';
+			else
+				$action=$postisanswer ? 'a_vote_nil' : 'q_vote_nil';
+*/			
+			if ($vote<0)
+				$action='c_vote_down';
+			elseif ($vote>0)
+				$action='c_vote_up';
+			else
+				$action='c_vote_nil';
+					
+			//qa_report_write_action($userid, null, $action, null, null, null);
+
+			qa_report_event($action, $userid, $handle, $cookieid, array(
+				'postid' => $post['postid'],
+				'vote' => $vote,
+				'oldvote' => $oldvote,
+			));
+		}		
 		
 
 	}
