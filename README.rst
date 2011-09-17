@@ -1,6 +1,6 @@
-==================================
-Question2Answer Comment Voting 0.1
-==================================
+====================================
+Question2Answer Comment Voting 1.0b
+====================================
 -----------
 Description
 -----------
@@ -33,7 +33,7 @@ Installation
 ----------
 Disclaimer
 ----------
-This is **alpha** code.  It is not intended for production environments unless you are very brave... well, at least a little brave, and maybe a bit foolhardy as well.  Refunds will not be given.  If it breaks, you get to keep both parts.
+This is **beta** code.  It is probably okay for production environments, but may not work exactly as expected.  Refunds will not be given.  If it breaks, you get to keep both parts.
 
 -------
 Release

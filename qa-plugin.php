@@ -4,7 +4,7 @@
         Plugin Name: Comment Voting
         Plugin URI: https://github.com/NoahY/q2a-comment-voting
         Plugin Description: Vote on comments
-        Plugin Version: 0.1
+        Plugin Version: 1.0b
         Plugin Date: 2011-08-15
         Plugin Author: NoahY
         Plugin Author URI:                              
