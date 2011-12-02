@@ -320,8 +320,6 @@
 				'vote' => $vote,
 				'oldvote' => $oldvote,
 			));
-		}		
-		
-
+		}
 	}
 

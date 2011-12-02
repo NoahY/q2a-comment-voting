@@ -4,11 +4,44 @@
         function option_default($option) {
             
             switch($option) {
+				case 'badges/nice_comment':
+					return 'Nice Comment';
+				case 'badges/good_comment':
+					return 'Good Comment';
+				case 'badges/great_comment':
+					return 'Great Comment';
+				case 'badges/nice_comment_desc':
+				case 'badges/good_comment_desc':
+				case 'badges/great_comment_desc':
+					return 'Comment received +# upvote';
                 default:
                     return null;
             }
             
         }
+
+		function custom_badges() {
+			return array(
+				'nice_comment' => array('var'=>2, 'type'=>0),
+				'good_comment' => array('var'=>5, 'type'=>1),
+				'great_comment' => array('var'=>10, 'type'=>2)
+			);
+		}
+		
+		
+		function custom_badges_rebuild() {
+			$awarded = 0;
+			
+			$posts = qa_db_query_sub(
+				'SELECT userid, postid, netvotes FROM ^posts WHERE type=$ AND netvotes>0',
+				'C'
+			);
+			while ( ($post=qa_db_read_one_assoc($posts,true)) !== null ) {
+				$badges = array('nice_comment','good_comment','excellent_comment');
+				$awarded += count(qa_badge_award_check($badges,(int)$posts['netvotes'],$posts['userid'],$posts['postid'],2));
+			}
+			return $awarded;
+		}
         
         function allow_template($template)
         {
