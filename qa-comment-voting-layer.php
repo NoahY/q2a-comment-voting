@@ -32,7 +32,7 @@
 			qa_html_theme_base::head_script();
 			if(qa_opt('voting_on_cs')) {
 				$this->output("
-<script>
+<script type='text/javascript'>
 	function ajaxCommentVote(elem, oldvote)
 	{
 		var ens=elem.getAttribute('name').split('_');
