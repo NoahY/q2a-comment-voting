@@ -8,7 +8,7 @@
 		{
 			if(!isset($_POST['ajax_comment_vote'])) {
 				qa_html_theme_base::doctype();
-				if($this->request == 'admin/permissions') {
+				if($this->request == 'admin/permissions' && function_exists('qa_register_plugin_phrases')) {
 					$permits[] = 'permit_vote_c';
 					foreach($permits as $optionname) {
 						$value = qa_opt($optionname);

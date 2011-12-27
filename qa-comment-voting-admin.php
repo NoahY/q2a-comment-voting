@@ -15,9 +15,9 @@
 				case 'badges/great_comment_desc':
 					return 'Comment received +# upvote';
 				case 'permit_vote_c':
-					return 150;
+					return qa_opt('permit_vote_a');
 				case 'permit_vote_c_points':
-					return 0;
+					return qa_opt('permit_vote_a_points');
 				default:
 					return null;
 			}
