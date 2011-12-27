@@ -11,6 +11,8 @@ Features
 --------
 - switch on and off via admin/plugins
 - switch between upvoting only and up/down voting via admin/plugins
+- configure voiting privilege via admin/permissions
+- adds three custom badges for voted-up comment owners (req. badges plugin)
 
 ------------
 Installation

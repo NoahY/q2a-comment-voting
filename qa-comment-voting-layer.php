@@ -2,20 +2,45 @@
 
 	class qa_html_theme_layer extends qa_html_theme_base {
 
-		function option_default($option) {
-			
-			switch($option) {
-				default:
-					return false;
-			}
-			
-		}
-
 		// check for post
 		
 		function doctype()
 		{
-			if(!isset($_POST['ajax_comment_vote'])) qa_html_theme_base::doctype();
+			if(!isset($_POST['ajax_comment_vote'])) {
+				qa_html_theme_base::doctype();
+				if($this->request == 'admin/permissions') {
+					$permits[] = 'permit_vote_c';
+					foreach($permits as $optionname) {
+						$value = qa_opt($optionname);
+						$optionfield=array(
+							'id' => $optionname,
+							'label' => qa_lang_html('comment_voting/'.$optionname).':',
+							'tags' => 'NAME="option_'.$optionname.'" ID="option_'.$optionname.'"',
+							'error' => qa_html(@$errors[$optionname]),
+						);					
+						$widest=QA_PERMIT_ALL;
+						$narrowest=QA_PERMIT_ADMINS;
+						
+						$permitoptions=qa_admin_permit_options($widest, $narrowest, (!QA_FINAL_EXTERNAL_USERS) && qa_opt('confirm_user_emails'));
+						
+						if (count($permitoptions)>1)
+							qa_optionfield_make_select($optionfield, $permitoptions, $value,
+								($value==QA_PERMIT_CONFIRMED) ? QA_PERMIT_USERS : min(array_keys($permitoptions)));
+						$this->content['form']['fields'][$optionname]=$optionfield;
+
+						$this->content['form']['fields'][$optionname.'_points']= array(
+							'id' => $optionname.'_points',
+							'tags' => 'NAME="option_'.$optionname.'_points" ID="option_'.$optionname.'_points"',
+							'type'=>'number',
+							'value'=>qa_opt($optionname.'_points'),
+							'prefix'=>qa_lang_html('admin/users_must_have').'&nbsp;',
+							'note'=>qa_lang_html('admin/points')
+						);
+						$checkboxtodisplay[$permitoption.'_points']='(option_'.$permitoption.'=='.qa_js(QA_PERMIT_POINTS).') ||(option_'.$permitoption.'=='.qa_js(QA_PERMIT_POINTS_CONFIRMED).')';
+					}
+					qa_set_display_rules(&$this->content, $checkboxtodisplay);
+				}
+			}
 		}
 
 		function html()
@@ -153,7 +178,7 @@
 				}
 				$netvotes = ($c_item['raw']['netvotes']!=0?$c_item['raw']['netvotes']:'');
 				
-				if(!$this->comment_vote_error_html($c_item, $this->logged_in_userid, $topage)) {
+				if(qa_permit_check('permit_vote_c')) {
 					$this->output('<table class="comment-votable-container"><tr><td class="comment-vote-container">');
 					switch($vote) {
 						case 1:
@@ -233,10 +258,10 @@
 
 			if (
 				is_array($post) &&
-				qa_opt('voting_on_cs') &&
+				qa_opt('permit_vote_c') &&
 				( (!isset($post['raw']['userid'])) || (!isset($userid)) || ((int)$post['raw']['userid']!=$userid) )
 			) {
-				switch (qa_user_permit_error('permit_vote_a', 'V')) { // for now we piggyback onto permit_vote_a
+				switch (qa_user_permit_error('permit_vote_c', 'V')) {
 					case 'login':
 						return qa_insert_login_links(qa_lang_html('main/vote_must_login'), $topage);
 						break;

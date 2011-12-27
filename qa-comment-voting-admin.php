@@ -1,9 +1,9 @@
 <?php
-    class qa_comment_voting_admin {
+	class qa_comment_voting_admin {
 
-        function option_default($option) {
-            
-            switch($option) {
+		function option_default($option) {
+			
+			switch($option) {
 				case 'badges/nice_comment':
 					return 'Nice Comment';
 				case 'badges/good_comment':
@@ -14,11 +14,15 @@
 				case 'badges/good_comment_desc':
 				case 'badges/great_comment_desc':
 					return 'Comment received +# upvote';
-                default:
-                    return null;
-            }
-            
-        }
+				case 'permit_vote_c':
+					return 150;
+				case 'permit_vote_c_points':
+					return 0;
+				default:
+					return null;
+			}
+			
+		}
 
 		function custom_badges() {
 			return array(
@@ -38,61 +42,61 @@
 			);
 			while ( ($post=qa_db_read_one_assoc($posts,true)) !== null ) {
 				$badges = array('nice_comment','good_comment','excellent_comment');
-				$awarded += count(qa_badge_award_check($badges,(int)$posts['netvotes'],$posts['userid'],$posts['postid'],2));
+				$awarded += count(qa_badge_award_check($badges,(int)$post['netvotes'],$post['userid'],$post['postid'],2));
 			}
 			return $awarded;
 		}
-        
-        function allow_template($template)
-        {
-            return ($template!='admin');
-        }       
-            
-        function admin_form(&$qa_content)
-        {                       
-                            
-        // Process form input
-            
-            $ok = null;
-            
-            if (qa_clicked('comment_voting_save')) {
-                qa_opt('voting_on_cs',(bool)qa_post_text('voting_on_cs'));
-                qa_opt('voting_down_cs',(bool)qa_post_text('voting_down_cs'));
-                $ok = 'Settings Saved.';
-            }
-            
-                    
-        // Create the form for display
+		
+		function allow_template($template)
+		{
+			return ($template!='admin');
+		}	   
+			
+		function admin_form(&$qa_content)
+		{					   
+							
+		// Process form input
+			
+			$ok = null;
+			
+			if (qa_clicked('comment_voting_save')) {
+				qa_opt('voting_on_cs',(bool)qa_post_text('voting_on_cs'));
+				qa_opt('voting_down_cs',(bool)qa_post_text('voting_down_cs'));
+				$ok = 'Settings Saved.';
+			}
+			
+					
+		// Create the form for display
 
-            
-            $fields = array();
-            
-            $fields[] = array(
-                'label' => 'Enable comment voting',
-                'tags' => 'NAME="voting_on_cs"',
-                'value' => qa_opt('voting_on_cs'),
-                'type' => 'checkbox',
-            );
-            
-            $fields[] = array(
-                'label' => 'Enable comment down-voting',
-                'tags' => 'NAME="voting_down_cs"',
-                'value' => qa_opt('voting_down_cs'),
-                'type' => 'checkbox',
-            );
+			
+			$fields = array();
+			
+			$fields[] = array(
+				'label' => 'Enable comment voting',
+				'tags' => 'NAME="voting_on_cs"',
+				'value' => qa_opt('voting_on_cs'),
+				'type' => 'checkbox',
+			);
+			
+			$fields[] = array(
+				'label' => 'Enable comment down-voting',
+				'tags' => 'NAME="voting_down_cs"',
+				'value' => qa_opt('voting_down_cs'),
+				'type' => 'checkbox',
+			);
 
-            return array(           
-                'ok' => ($ok && !isset($error)) ? $ok : null,
-                    
-                'fields' => $fields,
-             
-                'buttons' => array(
-                    array(
-                        'label' => 'Save',
-                        'tags' => 'NAME="comment_voting_save"',
-                    )
-                ),
-            );
-        }
-    }
+			return array(		   
+				'ok' => ($ok && !isset($error)) ? $ok : null,
+					
+				'fields' => $fields,
+			 
+				'buttons' => array(
+					array(
+						'label' => 'Save',
+						'tags' => 'NAME="comment_voting_save"',
+					)
+				),
+			);
+		}
+	}
 
