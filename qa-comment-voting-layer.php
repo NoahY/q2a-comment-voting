@@ -38,7 +38,7 @@
 						);
 						$checkboxtodisplay[$permitoption.'_points']='(option_'.$permitoption.'=='.qa_js(QA_PERMIT_POINTS).') ||(option_'.$permitoption.'=='.qa_js(QA_PERMIT_POINTS_CONFIRMED).')';
 					}
-					qa_set_display_rules(&$this->content, $checkboxtodisplay);
+					qa_set_display_rules($this->content, $checkboxtodisplay);
 				}
 			}
 		}
