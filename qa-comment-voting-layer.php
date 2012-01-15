@@ -36,7 +36,7 @@
 							'prefix'=>qa_lang_html('admin/users_must_have').'&nbsp;',
 							'note'=>qa_lang_html('admin/points')
 						);
-						$checkboxtodisplay[$permitoption.'_points']='(option_'.$permitoption.'=='.qa_js(QA_PERMIT_POINTS).') ||(option_'.$permitoption.'=='.qa_js(QA_PERMIT_POINTS_CONFIRMED).')';
+						$checkboxtodisplay[$optionname.'_points']='(option_'.$optionname.'=='.qa_js(QA_PERMIT_POINTS).') ||(option_'.$optionname.'=='.qa_js(QA_PERMIT_POINTS_CONFIRMED).')';
 					}
 					qa_set_display_rules($this->content, $checkboxtodisplay);
 				}
