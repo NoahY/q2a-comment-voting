@@ -26,6 +26,12 @@
 
 	return array(
 		'permit_vote_c' => 'Vote on comments',
+		'badge_nice_comment' => 'Nice Comment',
+		'badge_good_comment' => 'Good Comment',
+		'badge_great_comment' => 'Great Comment',
+		'badge_nice_comment_desc' => 'Comment received +# upvote',
+		'badge_good_comment_desc' => 'Comment received +# upvote',
+		'badge_great_comment_desc' => 'Comment received +# upvote',
 	);
 	
 

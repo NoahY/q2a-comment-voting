@@ -4,16 +4,6 @@
 		function option_default($option) {
 			
 			switch($option) {
-				case 'badges/nice_comment':
-					return 'Nice Comment';
-				case 'badges/good_comment':
-					return 'Good Comment';
-				case 'badges/great_comment':
-					return 'Great Comment';
-				case 'badges/nice_comment_desc':
-				case 'badges/good_comment_desc':
-				case 'badges/great_comment_desc':
-					return 'Comment received +# upvote';
 				case 'permit_vote_c':
 					return qa_opt('permit_vote_a');
 				case 'permit_vote_c_points':
