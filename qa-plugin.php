@@ -5,7 +5,7 @@
 		Plugin URI: https://github.com/NoahY/q2a-comment-voting
 		Plugin Update Check URI: https://github.com/NoahY/q2a-comment-voting/raw/master/qa-plugin.php
 		Plugin Description: Vote on comments
-		Plugin Version: 1.2
+		Plugin Version: 1.3
 		Plugin Date: 2011-08-15
 		Plugin Author: NoahY
 		Plugin Author URI:							  

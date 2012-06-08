@@ -167,7 +167,7 @@
 		function c_item_main($c_item)
 		{
 			global $topage;
-			if(qa_opt('voting_on_cs') && is_array($this->comment_votes) && isset($c_item['content']) && !isset($c_item['url']) && !strpos($c_item['content'],'question-closed-message')) {
+			if(qa_opt('voting_on_cs') && $c_item['raw']['userid'] != qa_get_logged_in_userid() && is_array($this->comment_votes) && isset($c_item['content']) && !isset($c_item['url']) && !strpos($c_item['content'],'question-closed-message')) {
 				$vote=0;
 				$flag=0;
 				foreach($this->comment_votes as $vote) {
