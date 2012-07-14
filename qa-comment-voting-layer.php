@@ -167,7 +167,7 @@
 		function c_item_main($c_item)
 		{
 			global $topage;
-			if(qa_opt('voting_on_cs') && $c_item['raw']['userid'] != qa_get_logged_in_userid() && is_array($this->comment_votes) && isset($c_item['content']) && !isset($c_item['url']) && !strpos($c_item['content'],'question-closed-message')) {
+			if(qa_opt('voting_on_cs') && is_array($this->comment_votes) && isset($c_item['content']) && !isset($c_item['url']) && !strpos($c_item['content'],'question-closed-message')) {
 				$vote=0;
 				$flag=0;
 				foreach($this->comment_votes as $vote) {
@@ -201,7 +201,14 @@
 					
 					if(!qa_opt('voting_down_cs') && $vote != -1) $down_type = false;
 					
-					$this->output(($up_type!==false?'<div class="comment-vote-item'.$up_type.'" name="vote_'.$c_item['raw']['postid'].'_'.$up.'_c'.$c_item['raw']['postid'].'_1" onclick="ajaxCommentVote(this);" title="'.qa_lang_html('main/vote'.($up == 0?'d':'').'_up_popup').'">▲</div>':'').($netvotes?'<div id="voting_'.$c_item['raw']['postid'].'">'.$netvotes.'</div>':'').($down_type!==false?'<div class="comment-vote-item'.$down_type.'" onclick="ajaxCommentVote(this);" name="vote_'.$c_item['raw']['postid'].'_'.$down.'_c'.$c_item['raw']['postid'].'_-1" title="'.qa_lang_html('main/vote'.($down == 0?'d':'').'_down_popup').'">▼</div>':''));
+					// don't allow for own user
+					
+					if($c_item['raw']['userid'] != qa_get_logged_in_userid())
+						$this->output(($up_type!==false?'<div class="comment-vote-item'.$up_type.'" name="vote_'.$c_item['raw']['postid'].'_'.$up.'_c'.$c_item['raw']['postid'].'_1" onclick="ajaxCommentVote(this);" title="'.qa_lang_html('main/vote'.($up == 0?'d':'').'_up_popup').'">▲</div>':'').($netvotes?'<div id="voting_'.$c_item['raw']['postid'].'">'.$netvotes.'</div>':'').($down_type!==false?'<div class="comment-vote-item'.$down_type.'" onclick="ajaxCommentVote(this);" name="vote_'.$c_item['raw']['postid'].'_'.$down.'_c'.$c_item['raw']['postid'].'_-1" title="'.qa_lang_html('main/vote'.($down == 0?'d':'').'_down_popup').'">▼</div>':''));
+					else if ($netvotes) {
+						$this->output('<div id="voting_'.$c_item['raw']['postid'].'">'.$netvotes.'</div>');
+					
+					}
 					$this->output('</td><td>');
 					qa_html_theme_base::c_item_main($c_item);
 					$this->output('</td></tr></table>');
