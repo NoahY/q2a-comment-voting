@@ -55,7 +55,7 @@
 
 		function head_script() {
 			qa_html_theme_base::head_script();
-			if(qa_opt('voting_on_cs')) {
+			if(qa_opt('voting_on_cs') && isset($this->content['q_view'])) {
 				$this->output("
 <script type='text/javascript'>
 	function ajaxCommentVote(elem, oldvote)
